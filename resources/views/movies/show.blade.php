@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    
+    @dump($movie)
 </body>
 </html>
