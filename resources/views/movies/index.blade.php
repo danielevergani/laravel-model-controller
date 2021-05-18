@@ -7,6 +7,7 @@
 @section('content')
 <div class="container">
     <h1>I FILM</h1>
+    <a href="{{route('movies.create')}}"><button type="button" class="btn btn-success">aggiungi film</button></a>
     <table class="table">
         <thead>
           <tr>
@@ -17,8 +18,6 @@
           </tr>
         </thead>
         <tbody>
-            
-        
         @foreach ($movies as $movie)
             <tr>
                 <td>{{$movie -> title}}</td>

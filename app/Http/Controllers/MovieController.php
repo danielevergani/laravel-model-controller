@@ -25,7 +25,7 @@ class MovieController extends Controller
      */
     public function create()
     {
-        //
+        return view("movies.create");
     }
 
     /**
@@ -36,9 +36,34 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $year = date("Y") + 1;
 
+        $request->validate([
+            'title' => 'required|string|max:100',
+            'author' => 'required|string|max:50',
+            'genres' => 'required|string|max:50',
+            'plot' => 'required|string',
+            'year' => 'required|numeric|min:1900|max:'.$year
+        ]);
+
+        $data = $request -> all();
+
+        
+
+        $newMovie = new Movie;
+        $newMovie->title = $data['title'];
+        $newMovie->author = $data['author'];
+        $newMovie->genres = $data['genres'];
+        $newMovie->plot = $data['plot'];
+        $newMovie->year = $data['year'];
+        $newMovie->cover_image = $data['cover_image'];
+
+        
+        $newMovie->save();
+
+        return redirect()->route('movies.index')->with('message', 'Il film ' . $newMovie->title . ' è stato aggiunto');
+    }
+    
     /**
      * Display the specified resource.
      *
