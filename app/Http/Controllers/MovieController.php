@@ -7,6 +7,20 @@ use App\Movie;
 
 class MovieController extends Controller
 {
+    protected $requestValidation = [];
+
+    public function __construct()
+    {
+        $year = date("Y") + 1;
+
+        $this->requestValidation = [
+            'title' => 'required|string|max:100',
+            'author' => 'required|string|max:50',
+            'genre' => 'required|string|max:50',
+            'plot' => 'required|string',
+            'year' => 'required|numeric|min:1900|max:'.$year
+        ];
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,32 +50,17 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        $year = date("Y") + 1;
+        $data = $request->all();
 
-        $request->validate([
-            'title' => 'required|string|max:100',
-            'author' => 'required|string|max:50',
-            'genres' => 'required|string|max:50',
-            'plot' => 'required|string',
-            'year' => 'required|numeric|min:1900|max:'.$year
-        ]);
+        if ( $data['cover_image'] === NULL ) {
+            unset($data['cover_image']);
+        }
 
-        $data = $request -> all();
+        $request->validate($this->requestValidation);
 
-        
+        $movieNew = Movie::create($data);
 
-        $newMovie = new Movie;
-        $newMovie->title = $data['title'];
-        $newMovie->author = $data['author'];
-        $newMovie->genres = $data['genres'];
-        $newMovie->plot = $data['plot'];
-        $newMovie->year = $data['year'];
-        $newMovie->cover_image = $data['cover_image'];
-
-        
-        $newMovie->save();
-
-        return redirect()->route('movies.index')->with('message', 'Il film ' . $newMovie->title . ' è stato aggiunto');
+        return redirect()->route('movies.index')->with('message', 'Il film ' . $movieNew->title . ' è stato aggiunto');
     }
     
     /**
