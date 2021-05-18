@@ -24,6 +24,11 @@
                 <td>{{$movie -> author}}</td>
                 <td>{{$movie -> genre}}</td>
                 <td><button class="btn"><a href="{{route('movies.show', ['movie' => $movie -> id])}}">DETTAGLI</a></button></td>
+                <td><form action="{{route('movies.destroy', ['movie'=> $movie])}}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn" type="submit">cancella</button>
+                </form></td>
             </tr>
         @endforeach
         </tbody>
