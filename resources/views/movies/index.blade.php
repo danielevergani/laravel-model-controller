@@ -23,7 +23,10 @@
                 <td>{{$movie -> title}}</td>
                 <td>{{$movie -> author}}</td>
                 <td>{{$movie -> genre}}</td>
-                <td><button class="btn"><a href="{{route('movies.show', ['movie' => $movie -> id])}}">DETTAGLI</a></button></td>
+                <td>
+                    <button class="btn"><a href="{{route('movies.show', ['movie' => $movie -> id])}}">DETTAGLI</a></button>
+                    <button class="btn"><a href="{{route('movies.edit', ['movie' => $movie -> id])}}">MODIFICA</a></button>
+                </td>
                 <td><form action="{{route('movies.destroy', ['movie'=> $movie])}}" method="POST">
                     @method('DELETE')
                     @csrf
