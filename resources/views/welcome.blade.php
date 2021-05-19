@@ -64,28 +64,31 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <ul>
-                @foreach ($movies as $movie)
-                    <li>{{$movie -> title}}</li>
-                @endforeach
-                </ul>
-            </div>
+        <div id="app">
+            <ul>
+                <li v-for="(films, index) in film"><a :href='"/movies/" + films.id'>@{{films.title}}</a></li>
+            </ul>
         </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- development version, includes helpful console warnings -->
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     </body>
+    <script>
+        var app = new Vue({
+            el : '#app',
+            data:{
+                film:[]
+            },
+            mounted: function(){
+                axios.get('/api/movies')
+                .then((response)=>{
+                    this.film = response.data;
+                });
+            },
+            methods:{
+
+            }
+        })
+    </script>
 </html>
